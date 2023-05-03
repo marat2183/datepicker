@@ -20,8 +20,6 @@ const useDatePicker = (initialDate: Date = new Date()) => {
 
   const selectedDate = new Date(currentYear, currentMonth, currentDay);
 
-  const daysArray = helper.getDaysToShow(daysInMonth, dayOfWeekForFirstDay);
-
   const minMonthNum = 0;
   const maxMonthNum = 11;
   const minDayNum = 1;
@@ -29,10 +27,11 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   const minYearNum = 1970;
   const maxYearNum = 2025;
 
-  const yearsRange = helper.arrayRange(minYearNum, maxYearNum, 1);
-  const daysRange = helper.arrayRange(1, daysInMonth, 1);
-  const monthsRange = months;
-  const daysOfWeekRange = daysOfWeek
+  const daysArrayToShow: Array<null | number> = helper.getDaysToShow(daysInMonth, dayOfWeekForFirstDay);
+  const yearsRange: Array<number> = helper.arrayRange(minYearNum, maxYearNum, 1);
+  const daysRange: Array<number> = helper.arrayRange(1, daysInMonth, 1);
+  const monthsRange: Array<string> = months;
+  const daysOfWeekRange: Array<string>  = daysOfWeek
 
   const handleSetYear = (year: string | number) => {
     return setCurrentYear(Number(year));
@@ -101,7 +100,7 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   };
 
   return {
-    daysArray,
+    daysArrayToShow,
     currentDay,
     currentMonth,
     currentYear,

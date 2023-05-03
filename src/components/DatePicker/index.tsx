@@ -5,7 +5,7 @@ import s from "./index.module.scss";
 const DatePicker: React.FC = () => {
   const initialDate = new Date();
   const {
-    daysArray,
+    daysArrayToShow,
     currentDay,
     currentMonth,
     currentYear,
@@ -134,7 +134,7 @@ const DatePicker: React.FC = () => {
               </li>
             );
           })}
-          {daysArray.map((day, index) => {
+          {daysArrayToShow.map((day, index) => {
             if (day === null) {
               return (
                 <li
