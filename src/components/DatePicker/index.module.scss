@@ -13,6 +13,7 @@
 
 .datepicker__days-list-item {
   font-size: 20px;
+  border: 1px solid transparent;
 
   &--day-number {
     cursor: pointer;
@@ -29,12 +30,16 @@
     background-color: transparent;
   }
 
+  &--selected-day {
+    background-color: bisque;
+  }
+
   &--current-day {
-    background-color: #0c73fe;
+    border: 1px solid red;
   }
 
   &--prev-days {
-    color: rgba(0,0,0,.5);
+    color: rgba(0, 0, 0, 0.5);
   }
 }
 

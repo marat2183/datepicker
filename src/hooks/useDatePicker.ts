@@ -1,11 +1,6 @@
 import { useState, useCallback } from "react";
 import helper from "../utils/helpers";
-
-const arrayRange = (start : number, stop: number, step: number) : Array<number> =>
-    Array.from(
-    { length: (stop - start) / step + 1 },
-    (value, index) => start + index * step
-    );
+import { months, daysOfWeek } from "../utils/constants";
 
 
 const useDatePicker = (initialDate: Date = new Date()) => {
@@ -17,41 +12,43 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   );
   const [currentDay, setCurrentDay] = useState<number>(initialDate.getDay());
 
-  const numOfDays = helper.getDays(currentYear, currentMonth + 1);
+  const daysInMonth = helper.getDays(currentYear, currentMonth + 1);
   const dayOfWeekForFirstDay = helper.getMothNumOfFirstDay(
     currentYear,
     currentMonth
   );
 
-  const dateToShow = new Date(currentYear, currentMonth, currentDay);
+  const selectedDate = new Date(currentYear, currentMonth, currentDay);
 
-  const daysArray = helper.getDaysToShow(numOfDays, dayOfWeekForFirstDay);
+  const daysArray = helper.getDaysToShow(daysInMonth, dayOfWeekForFirstDay);
 
-  const minMonth = 0;
-  const maxMonth = 11;
+  const minMonthNum = 0;
+  const maxMonthNum = 11;
   const minDayNum = 1;
-  const maxDayNum = numOfDays;
-  const minYear = 1970
-  const maxYear = 2025
+  const maxDayNum = daysInMonth;
+  const minYearNum = 1970;
+  const maxYearNum = 2025;
 
-  const yearsArrayRange = arrayRange(minYear, maxYear, 1)
-  const daysArrayRange = arrayRange(1, numOfDays, 1)
+  const yearsRange = helper.arrayRange(minYearNum, maxYearNum, 1);
+  const daysRange = helper.arrayRange(1, daysInMonth, 1);
+  const monthsRange = months;
+  const daysOfWeekRange = daysOfWeek
 
   const handleSetYear = (year: string | number) => {
-    return setCurrentYear(Number(year))
-  }
+    return setCurrentYear(Number(year));
+  };
 
   const handleSetMonth = (month: string | number) => {
-    return setCurrentMonth(Number(month))
-  }
+    return setCurrentMonth(Number(month));
+  };
 
   const handleSetDay = (day: number | string) => {
-    return setCurrentDay(Number(day))
-  }
+    return setCurrentDay(Number(day));
+  };
 
   const handleClickPrevMonth = useCallback(() => {
-    if (currentMonth === minMonth) {
-      setCurrentMonth(maxMonth);
+    if (currentMonth === minMonthNum) {
+      setCurrentMonth(maxMonthNum);
       setCurrentYear((current) => current - 1);
       return;
     }
@@ -63,8 +60,8 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   }, [currentMonth]);
 
   const handleClickNextMonth = useCallback(() => {
-    if (currentMonth === maxMonth) {
-      setCurrentMonth(minMonth);
+    if (currentMonth === maxMonthNum) {
+      setCurrentMonth(minMonthNum);
       setCurrentYear((current) => current + 1);
       return;
     }
@@ -89,11 +86,11 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     }
     setCurrentDay((current) => current + 1);
     return;
-  }
+  };
 
   const handleClickPrevDay = () => {
     if (currentDay === minDayNum) {
-      const daysInPrevMonth = helper.getDays(currentYear, currentMonth)
+      const daysInPrevMonth = helper.getDays(currentYear, currentMonth);
       handleClickPrevMonth();
       setCurrentDay(daysInPrevMonth);
       return;
@@ -101,7 +98,7 @@ const useDatePicker = (initialDate: Date = new Date()) => {
 
     setCurrentDay((current) => current - 1);
     return;
-  }
+  };
 
   return {
     daysArray,
@@ -120,9 +117,11 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     handleSetYear,
     handleSetMonth,
     handleSetDay,
-    dateToShow,
-    yearsArrayRange,
-    daysArrayRange
+    selectedDate,
+    yearsRange,
+    monthsRange,
+    daysRange,
+    daysOfWeekRange
   };
 };
 
