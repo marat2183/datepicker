@@ -1,0 +1,30 @@
+.datepicker {
+  display: grid;
+  row-gap: 20px;
+}
+
+.datepicker__days-list {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(50px, auto));
+  column-gap: 15px;
+  row-gap: 15px;
+  list-style-type: none;
+}
+
+.datepicker__days-list-item {
+  font-size: 20px;
+
+  &--day-number {
+    cursor: pointer;
+    line-height: 2;
+    border-radius: 5px;
+  }
+  
+  &--day-number:hover {
+    background-color: rgba(0, 133, 255, 0.57);
+  }
+
+  &--current-day {
+    background-color: #0c73fe;
+  }
+}
