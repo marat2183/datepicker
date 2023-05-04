@@ -1,4 +1,5 @@
 import useDatePicker from "../../hooks/useDatePicker";
+import Day from "../Day";
 
 import s from "./index.module.scss";
 
@@ -22,9 +23,8 @@ const DatePicker: React.FC = () => {
     yearsRange,
     monthsRange,
     daysRange,
-    daysOfWeekRange
+    daysOfWeekRange,
   } = useDatePicker(initialDate);
-
   return (
     <div className={s["datepicker"]}>
       <div>{selectedDate.toDateString()}</div>
@@ -135,49 +135,31 @@ const DatePicker: React.FC = () => {
             );
           })}
           {daysArrayToShow.map((day, index) => {
-            if (day === null) {
+            if (day !== null) {
               return (
-                <li
+                <Day
+                  dayNum={day}
                   key={`${day}__${index}`}
-                  className={
-                    s["datepicker__days-list-item"] +
-                    " " +
-                    s["datepicker__days-list-item--day-number"] +
-                    " " +
-                    s["datepicker__days-list-item--disabled"]
+                  isDisabled={
+                    selectedMonth === initialDate.getMonth() &&
+                    initialDate.getDate() > day
                   }
-                >
-                  {""}
-                </li>
-              );
-            } else {
-              return (
-                <li
-                  key={`${day}__${index}`}
-                  className={
-                    s["datepicker__days-list-item"] +
-                    " " +
-                    s["datepicker__days-list-item--day-number"] +
-                    " " +
-                    (selectedMonth === initialDate.getMonth() &&
-                    initialDate.getDate() === day + 1
-                      ? " " + s["datepicker__days-list-item--current-day"]
-                      : "") +
-                    (selectedMonth === initialDate.getMonth() &&
-                    initialDate.getDate() > day + 1
-                      ? " " + s["datepicker__days-list-item--prev-days"]
-                      : "") +
-                    (
-                    selectedDay === day + 1
-                      ? " " + s["datepicker__days-list-item--selected-day"]
-                      : "")
+                  isPrevious={
+                    selectedMonth === initialDate.getMonth() &&
+                    initialDate.getDate() > day
                   }
-                  onClick={() => handleSetDay(day + 1)}
-                >
-                  {day + 1}
-                </li>
+                  isSelected={selectedDay === day}
+                  isCurrentDay={
+                    selectedMonth === initialDate.getMonth() &&
+                    initialDate.getDate() === day
+                  }
+                  onClick={() => handleSetDay(day)}
+                />
               );
             }
+            return (
+              <Day dayNum={day} key={`${day}__${index}`} isDisabled={true} />
+            );
           })}
         </ul>
       </div>

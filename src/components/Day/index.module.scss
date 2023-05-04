@@ -1,0 +1,26 @@
+.day {
+  cursor: pointer;
+  line-height: 2;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(0, 133, 255, 0.57);
+  }
+
+  &--disabled:hover {
+    cursor: unset;
+    background-color: transparent;
+  }
+  
+  &--selected-day {
+    background-color: bisque;
+  }
+  
+  &--current-day {
+    border: 1px solid red;
+  }
+  
+  &--prev-days {
+    color: rgba(0, 0, 0, 0.5);
+  }
+}

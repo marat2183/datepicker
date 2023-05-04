@@ -16,7 +16,7 @@ const getDaysToShow = (
   numOfDays: number,
   dayOfWeekForFirstDay: number
 ): Array<number | null> => {
-  const daysOfWeek = Array.from(Array(numOfDays).keys());
+  const daysOfWeek = arrayRange(1, numOfDays);
   const needToAdd = (dayOfWeekForFirstDay - 1 + 7) % 7;
   const nullArray = new Array(needToAdd).fill(null);
   return [...nullArray, ...daysOfWeek];
