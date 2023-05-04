@@ -23,4 +23,8 @@
   &--prev-days {
     color: rgba(0, 0, 0, 0.5);
   }
+
+  &--selected-range-day {
+    background-color: yellow;
+  }
 }

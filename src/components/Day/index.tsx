@@ -42,6 +42,7 @@ const Day = ({
         (isDisabled ? " " + s["day--disabled"] : "") +
         (isPrevious ? " " + s["day--prev-days"] : "") +
         (isSelected ? " " + s["day--selected-day"] : "") +
+        (isInSelectedRange ? " " + s["day--selected-range-day"] : "") +
         (className ? " " + className : "")
       }
       onClick={onClick}

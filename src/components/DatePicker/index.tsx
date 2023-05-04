@@ -19,15 +19,24 @@ const DatePicker: React.FC = () => {
     handleClickPrevYear,
     handleClickNextDay,
     handleClickPrevDay,
-    selectedDate,
+    startSelectedDate,
+    endSelectedDate,
     yearsRange,
     monthsRange,
     daysRange,
     daysOfWeekRange,
   } = useDatePicker(initialDate);
+
+  const startSelectedDateTimesTamp = startSelectedDate && (startSelectedDate as Date).getTime();
+  const endSelectedDateTimesTamp = endSelectedDate && (endSelectedDate as Date).getTime()
+
+
   return (
     <div className={s["datepicker"]}>
-      <div>{selectedDate.toDateString()}</div>
+      <div>
+        Start: {startSelectedDate ? startSelectedDate.toDateString() : ""}
+      </div>
+      <div>End: {endSelectedDate ? endSelectedDate.toDateString() : ""}</div>
       <div className={s["datepicker__year"]}>
         <button
           className={s["datepicker__year-btn"]}
@@ -148,10 +157,23 @@ const DatePicker: React.FC = () => {
                     selectedMonth === initialDate.getMonth() &&
                     initialDate.getDate() > day
                   }
-                  isSelected={selectedDay === day}
+                  isSelected={
+                    (startSelectedDate?.getDate() === day &&
+                      selectedMonth === startSelectedDate?.getMonth()) ||
+                    (endSelectedDate?.getDate() === day &&
+                      selectedMonth === endSelectedDate?.getMonth())
+                  }
                   isCurrentDay={
                     selectedMonth === initialDate.getMonth() &&
                     initialDate.getDate() === day
+                  }
+                  isInSelectedRange={
+                    Boolean(startSelectedDateTimesTamp) &&
+                    Boolean(endSelectedDateTimesTamp) &&
+                    new Date(selectedYear, selectedMonth, day).getTime() >
+                      Math.min(startSelectedDateTimesTamp as number, endSelectedDateTimesTamp as number) &&
+                    new Date(selectedYear, selectedMonth, day).getTime() <
+                      Math.max(startSelectedDateTimesTamp as number, endSelectedDateTimesTamp as number)
                   }
                   onClick={() => handleSetDay(day)}
                 />

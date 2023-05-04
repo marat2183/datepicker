@@ -1,14 +1,22 @@
 import { useState } from "react";
 import helper from "../utils/helpers";
-import { months, daysOfWeek, minMonthNum, maxMonthNum, minDayNum, minYearNum, maxYearNum } from "../utils/constants";
+import {
+  months,
+  daysOfWeek,
+  minMonthNum,
+  maxMonthNum,
+  minDayNum,
+  minYearNum,
+  maxYearNum,
+} from "../utils/constants";
 
-const getNextMonth = (currentMonth: number) : number => {
-  return (currentMonth + 1) % (maxMonthNum + 1)
-}
+const getNextMonth = (currentMonth: number): number => {
+  return (currentMonth + 1) % (maxMonthNum + 1);
+};
 
-const getPrevMonth = (currentMonth: number) : number => {
-  return ((currentMonth - 1) + (maxMonthNum + 1)) % (maxMonthNum + 1)
-}
+const getPrevMonth = (currentMonth: number): number => {
+  return (currentMonth - 1 + (maxMonthNum + 1)) % (maxMonthNum + 1);
+};
 
 const useDatePicker = (initialDate: Date = new Date()) => {
   const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -19,7 +27,8 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   );
   const [selectedDay, setSelectedDay] = useState<number>(initialDate.getDay());
 
-  const selectedDate = new Date(selectedYear, selectedMonth, selectedDay);
+  const [startSelectedDate, setStartSelectedDate] = useState<Date | null>(null);
+  const [endSelectedDate, setEndSelectedDate] = useState<Date | null>(null);
 
   const daysInMonth = helper.getDays(selectedYear, selectedMonth + 1);
   const dayOfWeekForFirstDay = helper.getMothNumOfFirstDay(
@@ -27,11 +36,14 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     selectedMonth
   );
 
-  const daysArrayToShow: Array<null | number> = helper.getDaysToShow(daysInMonth, dayOfWeekForFirstDay);
+  const daysArrayToShow: Array<null | number> = helper.getDaysToShow(
+    daysInMonth,
+    dayOfWeekForFirstDay
+  );
   const yearsRange: Array<number> = helper.arrayRange(minYearNum, maxYearNum);
   const daysRange: Array<number> = helper.arrayRange(1, daysInMonth);
   const monthsRange: Array<string> = months;
-  const daysOfWeekRange: Array<string>  = daysOfWeek
+  const daysOfWeekRange: Array<string> = daysOfWeek;
 
   const handleSetYear = (year: string | number) => {
     return setSelectedYear(Number(year));
@@ -48,16 +60,29 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   };
 
   const handleSetDay = (day: number | string) => {
-    return setSelectedDay(Number(day));
+    setSelectedDay(Number(day));
+    if (startSelectedDate && endSelectedDate) {
+      setStartSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
+      setEndSelectedDate(null);
+      return;
+    }
+
+    if (startSelectedDate) {
+      setEndSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
+      return;
+    }
+
+    setStartSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
+    return;
   };
 
   const handleClickPrevMonth = () => {
     setSelectedMonth((current) => getPrevMonth(current));
 
     const prevMonth = getNextMonth(selectedMonth);
-    const daysInPrevMonth = helper.getDays(selectedYear, prevMonth + 1)
+    const daysInPrevMonth = helper.getDays(selectedYear, prevMonth + 1);
     if (selectedDay === daysInMonth && daysInMonth > daysInPrevMonth) {
-      setSelectedDay(daysInPrevMonth)
+      setSelectedDay(daysInPrevMonth);
     }
     return;
   };
@@ -66,9 +91,9 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     setSelectedMonth((current) => getNextMonth(current));
 
     const nextMonth = getNextMonth(selectedMonth);
-    const daysInNextMonth = helper.getDays(selectedYear, nextMonth + 1)
+    const daysInNextMonth = helper.getDays(selectedYear, nextMonth + 1);
     if (selectedDay === daysInMonth && daysInMonth > daysInNextMonth) {
-      setSelectedDay(daysInNextMonth)
+      setSelectedDay(daysInNextMonth);
     }
     return;
   };
@@ -91,7 +116,7 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     if (selectedDay === daysInMonth && selectedMonth === maxMonthNum) {
       setSelectedDay(1);
       setSelectedMonth((current) => getNextMonth(current));
-      setSelectedYear((current) => current + 1)
+      setSelectedYear((current) => current + 1);
       return;
     }
 
@@ -111,7 +136,7 @@ const useDatePicker = (initialDate: Date = new Date()) => {
       const daysInPrevMonth = helper.getDays(selectedYear, selectedMonth);
       setSelectedDay(daysInPrevMonth);
       setSelectedMonth((current) => getPrevMonth(current));
-      setSelectedYear((current) => current - 1)
+      setSelectedYear((current) => current - 1);
       return;
     }
 
@@ -136,11 +161,12 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     handleSetYear,
     handleSetMonth,
     handleSetDay,
-    selectedDate,
+    startSelectedDate,
+    endSelectedDate,
     yearsRange,
     monthsRange,
     daysRange,
-    daysOfWeekRange
+    daysOfWeekRange,
   };
 };
 
