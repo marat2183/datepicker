@@ -6,9 +6,9 @@ const DatePicker: React.FC = () => {
   const initialDate = new Date();
   const {
     daysArrayToShow,
-    currentDay,
-    currentMonth,
-    currentYear,
+    selectedDay,
+    selectedMonth,
+    selectedYear,
     handleSetYear,
     handleSetMonth,
     handleSetDay,
@@ -38,7 +38,7 @@ const DatePicker: React.FC = () => {
         <select
           name="year"
           id=""
-          value={currentYear}
+          value={selectedYear}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             handleSetYear(e.target.value)
           }
@@ -68,7 +68,7 @@ const DatePicker: React.FC = () => {
         <select
           name="month"
           id=""
-          value={currentMonth}
+          value={selectedMonth}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             handleSetMonth(e.target.value)
           }
@@ -98,7 +98,7 @@ const DatePicker: React.FC = () => {
         <select
           name="day"
           id=""
-          value={currentDay}
+          value={selectedDay}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             handleSetDay(e.target.value)
           }
@@ -159,16 +159,16 @@ const DatePicker: React.FC = () => {
                     " " +
                     s["datepicker__days-list-item--day-number"] +
                     " " +
-                    (currentMonth === initialDate.getMonth() &&
+                    (selectedMonth === initialDate.getMonth() &&
                     initialDate.getDate() === day + 1
                       ? " " + s["datepicker__days-list-item--current-day"]
                       : "") +
-                    (currentMonth === initialDate.getMonth() &&
+                    (selectedMonth === initialDate.getMonth() &&
                     initialDate.getDate() > day + 1
                       ? " " + s["datepicker__days-list-item--prev-days"]
                       : "") +
                     (
-                    currentDay === day + 1
+                    selectedDay === day + 1
                       ? " " + s["datepicker__days-list-item--selected-day"]
                       : "")
                   }

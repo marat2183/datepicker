@@ -23,4 +23,10 @@ const daysOfWeek = [
   'Su'
 ]
 
-export {months, daysOfWeek};
+const minMonthNum = 0;
+const maxMonthNum = 11;
+const minDayNum = 1;
+const minYearNum = 1970;
+const maxYearNum = 2050;
+
+export {months, daysOfWeek, minMonthNum, maxMonthNum, minDayNum, minYearNum, maxYearNum};
