@@ -1,4 +1,10 @@
-const arrayRange = (start: number, stop: number, step: number = 1): Array<number> =>
+import { maxMonthNum } from "../utils/constants";
+
+const arrayRange = (
+  start: number,
+  stop: number,
+  step: number = 1
+): Array<number> =>
   Array.from(
     { length: (stop - start) / step + 1 },
     (_, index) => start + index * step
@@ -22,11 +28,22 @@ const getDaysToShow = (
   return [...nullArray, ...daysOfWeek];
 };
 
+const getNextMonth = (currentMonth: number): number => {
+  return (currentMonth + 1) % (maxMonthNum + 1);
+};
+
+const getPrevMonth = (currentMonth: number): number => {
+  return (currentMonth - 1 + (maxMonthNum + 1)) % (maxMonthNum + 1);
+};
+
 const helper = {
   arrayRange,
   getDays,
   getMothNumOfFirstDay,
   getDaysToShow,
+  getNextMonth,
+  getPrevMonth
+
 };
 
 export default helper;

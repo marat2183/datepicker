@@ -1,5 +1,5 @@
 import { useState } from "react";
-import helper from "../utils/helpers";
+import helperUtil from "../utils/helpers";
 import {
   months,
   daysOfWeek,
@@ -10,14 +10,6 @@ import {
   maxYearNum,
 } from "../utils/constants";
 
-const getNextMonth = (currentMonth: number): number => {
-  return (currentMonth + 1) % (maxMonthNum + 1);
-};
-
-const getPrevMonth = (currentMonth: number): number => {
-  return (currentMonth - 1 + (maxMonthNum + 1)) % (maxMonthNum + 1);
-};
-
 const useDatePicker = (initialDate: Date = new Date()) => {
   const [selectedMonth, setSelectedMonth] = useState<number>(
     initialDate.getMonth()
@@ -26,31 +18,32 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     initialDate.getFullYear()
   );
   const [selectedDay, setSelectedDay] = useState<number>(initialDate.getDay());
-
+  
   const [startSelectedDate, setStartSelectedDate] = useState<Date | null>(null);
   const [endSelectedDate, setEndSelectedDate] = useState<Date | null>(null);
 
-  const daysInMonth = helper.getDays(selectedYear, selectedMonth + 1);
-  const dayOfWeekForFirstDay = helper.getMothNumOfFirstDay(
+  const daysInMonth = helperUtil.getDays(selectedYear, selectedMonth + 1);
+  const dayOfWeekForFirstDay = helperUtil.getMothNumOfFirstDay(
     selectedYear,
     selectedMonth
   );
 
-  const daysArrayToShow: Array<null | number> = helper.getDaysToShow(
+  const daysArrayToShow: Array<null | number> = helperUtil.getDaysToShow(
     daysInMonth,
     dayOfWeekForFirstDay
   );
-  const yearsRange: Array<number> = helper.arrayRange(minYearNum, maxYearNum);
-  const daysRange: Array<number> = helper.arrayRange(1, daysInMonth);
-  const monthsRange: Array<string> = months;
-  const daysOfWeekRange: Array<string> = daysOfWeek;
+  const daysOfWeekToShow: Array<string> = daysOfWeek;
 
+  const yearsRange: Array<number> = helperUtil.arrayRange(minYearNum, maxYearNum);
+  const daysRange: Array<number> = helperUtil.arrayRange(1, daysInMonth);
+  const monthsRange: Array<string> = months;
+  
   const handleSetYear = (year: string | number) => {
     return setSelectedYear(Number(year));
   };
 
   const handleSetMonth = (month: string | number) => {
-    const daysInNewMonth = helper.getDays(selectedYear, Number(month) + 1);
+    const daysInNewMonth = helperUtil.getDays(selectedYear, Number(month) + 1);
     if (selectedDay === daysInMonth && daysInMonth > daysInNewMonth) {
       setSelectedDay(daysInNewMonth);
       setSelectedMonth(Number(month));
@@ -77,10 +70,10 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   };
 
   const handleClickPrevMonth = () => {
-    setSelectedMonth((current) => getPrevMonth(current));
+    setSelectedMonth((current) => helperUtil.getPrevMonth(current));
 
-    const prevMonth = getNextMonth(selectedMonth);
-    const daysInPrevMonth = helper.getDays(selectedYear, prevMonth + 1);
+    const prevMonth = helperUtil.getNextMonth(selectedMonth);
+    const daysInPrevMonth = helperUtil.getDays(selectedYear, prevMonth + 1);
     if (selectedDay === daysInMonth && daysInMonth > daysInPrevMonth) {
       setSelectedDay(daysInPrevMonth);
     }
@@ -88,10 +81,10 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   };
 
   const handleClickNextMonth = () => {
-    setSelectedMonth((current) => getNextMonth(current));
+    setSelectedMonth((current) => helperUtil.getNextMonth(current));
 
-    const nextMonth = getNextMonth(selectedMonth);
-    const daysInNextMonth = helper.getDays(selectedYear, nextMonth + 1);
+    const nextMonth = helperUtil.getNextMonth(selectedMonth);
+    const daysInNextMonth = helperUtil.getDays(selectedYear, nextMonth + 1);
     if (selectedDay === daysInMonth && daysInMonth > daysInNextMonth) {
       setSelectedDay(daysInNextMonth);
     }
@@ -109,13 +102,13 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   const handleClickNextDay = () => {
     if (selectedDay === daysInMonth && selectedMonth !== maxMonthNum) {
       setSelectedDay(1);
-      setSelectedMonth((current) => getNextMonth(current));
+      setSelectedMonth((current) => helperUtil.getNextMonth(current));
       return;
     }
 
     if (selectedDay === daysInMonth && selectedMonth === maxMonthNum) {
       setSelectedDay(1);
-      setSelectedMonth((current) => getNextMonth(current));
+      setSelectedMonth((current) => helperUtil.getNextMonth(current));
       setSelectedYear((current) => current + 1);
       return;
     }
@@ -126,16 +119,16 @@ const useDatePicker = (initialDate: Date = new Date()) => {
 
   const handleClickPrevDay = () => {
     if (selectedDay === minDayNum && selectedMonth !== minMonthNum) {
-      const daysInPrevMonth = helper.getDays(selectedYear, selectedMonth);
+      const daysInPrevMonth = helperUtil.getDays(selectedYear, selectedMonth);
       setSelectedDay(daysInPrevMonth);
-      setSelectedMonth((current) => getPrevMonth(current));
+      setSelectedMonth((current) => helperUtil.getPrevMonth(current));
       return;
     }
 
     if (selectedDay === minDayNum && selectedMonth === minMonthNum) {
-      const daysInPrevMonth = helper.getDays(selectedYear, selectedMonth);
+      const daysInPrevMonth = helperUtil.getDays(selectedYear, selectedMonth);
       setSelectedDay(daysInPrevMonth);
-      setSelectedMonth((current) => getPrevMonth(current));
+      setSelectedMonth((current) => helperUtil.getPrevMonth(current));
       setSelectedYear((current) => current - 1);
       return;
     }
@@ -145,28 +138,38 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   };
 
   return {
-    daysArrayToShow,
-    selectedDay,
-    selectedMonth,
-    selectedYear,
-    setSelectedDay,
-    setSelectedMonth,
-    setSelectedYear,
-    handleClickNextMonth,
-    handleClickPrevMonth,
-    handleClickNextYear,
-    handleClickPrevYear,
-    handleClickNextDay,
-    handleClickPrevDay,
-    handleSetYear,
-    handleSetMonth,
-    handleSetDay,
-    startSelectedDate,
-    endSelectedDate,
-    yearsRange,
-    monthsRange,
-    daysRange,
-    daysOfWeekRange,
+    state : {
+      selectedDay,
+      selectedMonth,
+      selectedYear,
+      startSelectedDate,
+      endSelectedDate,
+    },
+    setState : {
+      setSelectedDay,
+      setSelectedMonth,
+      setSelectedYear,
+    },
+    handlers : {
+      handleClickNextMonth,
+      handleClickPrevMonth,
+      handleClickNextYear,
+      handleClickPrevYear,
+      handleClickNextDay,
+      handleClickPrevDay,
+      handleSetYear,
+      handleSetMonth,
+      handleSetDay,
+    },
+    optionsDate : {
+      yearsRange,
+      monthsRange,
+      daysRange,
+    },
+    dateToShow: {
+      daysOfWeekToShow,
+      daysArrayToShow
+    }
   };
 };
 
