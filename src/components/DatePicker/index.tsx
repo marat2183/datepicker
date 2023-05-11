@@ -1,5 +1,6 @@
 import useDatePicker from "../../hooks/useDatePicker";
 import Day from "../Day";
+import DayWrapper from "../DayWrapper";
 
 import s from "./index.module.scss";
 
@@ -8,11 +9,6 @@ const DatePicker = () => {
   const { state, handlers, optionsDate, dateToShow } =
     useDatePicker(initialDate);
 
-  const startSelectedDateTimesTamp =
-    state.startSelectedDate ? (state.startSelectedDate as Date).getTime() : "";
-  const endSelectedDateTimesTamp =
-    state.endSelectedDate ? (state.endSelectedDate as Date).getTime() : "";
-  
   return (
     <div className={s["datepicker"]}>
       <div>
@@ -92,7 +88,7 @@ const DatePicker = () => {
         <select
           name="day"
           id=""
-          value={state.selectedDay}
+          value={state.selectedDate}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             handlers.handleSetDay(e.target.value)
           }
@@ -129,66 +125,19 @@ const DatePicker = () => {
             );
           })}
           {dateToShow.daysArrayToShow.map((day, index) => {
-            if (day !== null) {
-              return (
-                <Day
-                  dayNum={day}
-                  key={`${day}__${index}`}
-                  isDisabled={
-                    state.selectedMonth === initialDate.getMonth() &&
-                    initialDate.getDate() > day
-                  }
-                  isPrevious={
-                    new Date(
-                      state.selectedYear,
-                      state.selectedMonth,
-                      day
-                    ).getTime() <
-                    new Date(
-                      initialDate.getFullYear(),
-                      initialDate.getMonth(),
-                      initialDate.getDate()
-                    ).getTime()
-                  }
-                  isSelected={
-                    (state.startSelectedDate?.getDate() === day &&
-                      state.selectedMonth ===
-                        state.startSelectedDate?.getMonth()) ||
-                    (state.endSelectedDate?.getDate() === day &&
-                      state.selectedMonth === state.endSelectedDate?.getMonth())
-                  }
-                  isCurrentDay={
-                    state.selectedMonth === initialDate.getMonth() &&
-                    initialDate.getDate() === day
-                  }
-                  isInSelectedRange={
-                    Boolean(startSelectedDateTimesTamp) &&
-                    Boolean(endSelectedDateTimesTamp) &&
-                    new Date(
-                      state.selectedYear,
-                      state.selectedMonth,
-                      day
-                    ).getTime() >
-                      Math.min(
-                        startSelectedDateTimesTamp as number,
-                        endSelectedDateTimesTamp as number
-                      ) &&
-                    new Date(
-                      state.selectedYear,
-                      state.selectedMonth,
-                      day
-                    ).getTime() <
-                      Math.max(
-                        startSelectedDateTimesTamp as number,
-                        endSelectedDateTimesTamp as number
-                      )
-                  }
-                  onClick={() => handlers.handleSetDay(day)}
-                />
-              );
-            }
             return (
-              <Day dayNum={day} key={`${day}__${index}`} isDisabled={true} />
+              <DayWrapper
+                key={`${day}__${index}`}
+                dayNum={day}
+                initialDate={initialDate}
+                selectedYear={state.selectedYear}
+                selectedMonth={state.selectedMonth}
+                selectedDate={state.selectedDate}
+                startSelectedDate={state.startSelectedDate}
+                endSelectedDate={state.endSelectedDate}
+                onClick={() => handlers.handleSetDay(day as number)}
+                render={(props) => <Day {...props} />}
+              />
             );
           })}
         </ul>
