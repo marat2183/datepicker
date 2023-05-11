@@ -9,10 +9,10 @@ const DatePicker = () => {
     useDatePicker(initialDate);
 
   const startSelectedDateTimesTamp =
-    state.startSelectedDate && (state.startSelectedDate as Date).getTime();
+    state.startSelectedDate ? (state.startSelectedDate as Date).getTime() : "";
   const endSelectedDateTimesTamp =
-    state.endSelectedDate && (state.endSelectedDate as Date).getTime();
-
+    state.endSelectedDate ? (state.endSelectedDate as Date).getTime() : "";
+  
   return (
     <div className={s["datepicker"]}>
       <div>
@@ -139,8 +139,16 @@ const DatePicker = () => {
                     initialDate.getDate() > day
                   }
                   isPrevious={
-                    state.selectedMonth === initialDate.getMonth() &&
-                    initialDate.getDate() > day
+                    new Date(
+                      state.selectedYear,
+                      state.selectedMonth,
+                      day
+                    ).getTime() <
+                    new Date(
+                      initialDate.getFullYear(),
+                      initialDate.getMonth(),
+                      initialDate.getDate()
+                    ).getTime()
                   }
                   isSelected={
                     (state.startSelectedDate?.getDate() === day &&

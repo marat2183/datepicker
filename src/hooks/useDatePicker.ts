@@ -17,8 +17,8 @@ const useDatePicker = (initialDate: Date = new Date()) => {
   const [selectedYear, setSelectedYear] = useState<number>(
     initialDate.getFullYear()
   );
-  const [selectedDay, setSelectedDay] = useState<number>(initialDate.getDay());
-  
+  const [selectedDay, setSelectedDay] = useState<number>(initialDate.getDate());
+
   const [startSelectedDate, setStartSelectedDate] = useState<Date | null>(null);
   const [endSelectedDate, setEndSelectedDate] = useState<Date | null>(null);
 
