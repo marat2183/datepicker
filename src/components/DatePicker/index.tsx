@@ -1,6 +1,10 @@
 import useDatePicker from "../../hooks/useDatePicker";
 import Day from "../Day";
 import DayWrapper from "../DayWrapper";
+import ControllersWrapper from "../ControllersWrapper";
+import DayController from "../DayController";
+import MonthController from "../MonthController";
+import YearController from "../YearController";
 
 import s from "./index.module.scss";
 
@@ -20,107 +24,34 @@ const DatePicker = ({
     type
   );
 
-
   return (
     <div className={s["datepicker"]}>
-      <div>
-        Start:{" "}
-        {dataToShow.startSelectionDateToShow}
-      </div>
-      <div>
-        End:{" "}
-        {dataToShow.endSelectionDateToShow}
-      </div>
-      <div className={s["datepicker__year"]}>
-        <button
-          className={s["datepicker__year-btn"]}
-          onClick={handlers.handleClickPrevYear}
-        >
-          Prev
-        </button>
-        <select
-          name="year"
-          id=""
-          value={state.selectedYear}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            handlers.handleSetYear(e.target.value)
-          }
-        >
-          {optionsDate.yearsRange.map((year, index) => {
-            return (
-              <option key={`${year}__${index}`} value={year}>
-                {year}
-              </option>
-            );
-          })}
-        </select>
-        <button
-          className={s["datepicker__year-btn"]}
-          onClick={handlers.handleClickNextYear}
-        >
-          Next
-        </button>
-      </div>
-      <div className={s["datepicker__month"]}>
-        <button
-          className={s["datepicker__month-btn"]}
-          onClick={handlers.handleClickPrevMonth}
-        >
-          Prev
-        </button>
-        <select
-          name="month"
-          id=""
-          value={state.selectedMonth}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            handlers.handleSetMonth(e.target.value)
-          }
-        >
-          {optionsDate.monthsRange.map((month, index) => {
-            return (
-              <option key={`${month}__${index}`} value={index}>
-                {month}
-              </option>
-            );
-          })}
-        </select>
-        <button
-          className={s["datepicker__month-btn"]}
-          onClick={handlers.handleClickNextMonth}
-        >
-          Next
-        </button>
-      </div>
-      <div className={s["datepicker__day"]}>
-        <button
-          className={s["datepicker__day-btn"]}
-          onClick={handlers.handleClickPrevDay}
-        >
-          Prev
-        </button>
-        <select
-          name="day"
-          id=""
-          value={state.selectedDate}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            handlers.handleSetDay(e.target.value)
-          }
-        >
-          {optionsDate.daysRange.map((day, index) => {
-            return (
-              <option key={`${day}__${index}`} value={day}>
-                {day}
-              </option>
-            );
-          })}
-        </select>
-        <button
-          className={s["datepicker__month-btn"]}
-          onClick={handlers.handleClickNextDay}
-        >
-          Next
-        </button>
-      </div>
+      <div>Start: {dataToShow.startSelectionDateToShow}</div>
+      <div>End: {dataToShow.endSelectionDateToShow}</div>
+      <ControllersWrapper
+        handleClickPrev={handlers.handleClickPrevYear}
+        handleClickNext={handlers.handleClickNextYear}
+        handleSet={handlers.handleSetYear}
+        value={state.selectedYear}
+        options={optionsDate.yearsRange}
+        render={(props) => <YearController {...props} />}
+      />
+      <ControllersWrapper
+        handleClickPrev={handlers.handleClickPrevMonth}
+        handleClickNext={handlers.handleClickNextMonth}
+        handleSet={handlers.handleSetMonth}
+        value={state.selectedMonth}
+        options={optionsDate.monthsRange}
+        render={(props) => <MonthController {...props} />}
+      />
+      <ControllersWrapper
+        handleClickPrev={handlers.handleClickPrevDay}
+        handleClickNext={handlers.handleClickNextDay}
+        handleSet={handlers.handleSetDay}
+        value={state.selectedDate}
+        options={optionsDate.daysRange}
+        render={(props) => <DayController {...props} />}
+      />
       <div className={s["datepicker__month-table"]}>
         <ul className={s["datepicker__days-list"]}>
           {dataToShow.daysOfWeekToShow.map((day, index) => {
