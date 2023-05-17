@@ -1,6 +1,9 @@
 .datepicker {
   display: grid;
   row-gap: 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 450px;
 }
 
 .datepicker__days-list {

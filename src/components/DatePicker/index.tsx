@@ -6,7 +6,7 @@ import s from "./index.module.scss";
 
 type DatePickerProps = {
   isSelectionRange?: boolean;
-  type?: string;
+  type?: "russian" | "english";
 };
 
 const DatePicker = ({
