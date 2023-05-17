@@ -199,7 +199,7 @@ const useDatePicker = (
       handleSetMonth,
       handleSetDay,
     },
-    optionsDate: {
+    optionsData: {
       yearsRange,
       monthsRange,
       daysRange,

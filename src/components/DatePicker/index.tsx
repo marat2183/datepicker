@@ -18,7 +18,7 @@ const DatePicker = ({
   type = "russian",
 }: DatePickerProps) => {
   const initialDate = new Date();
-  const { state, handlers, optionsDate, dataToShow } = useDatePicker(
+  const { state, handlers, optionsData, dataToShow } = useDatePicker(
     initialDate,
     isSelectionRange,
     type
@@ -33,7 +33,7 @@ const DatePicker = ({
         handleClickNext={handlers.handleClickNextYear}
         handleSet={handlers.handleSetYear}
         value={state.selectedYear}
-        options={optionsDate.yearsRange}
+        options={optionsData.yearsRange}
         render={(props) => <YearController {...props} />}
       />
       <ControllersWrapper
@@ -41,7 +41,7 @@ const DatePicker = ({
         handleClickNext={handlers.handleClickNextMonth}
         handleSet={handlers.handleSetMonth}
         value={state.selectedMonth}
-        options={optionsDate.monthsRange}
+        options={optionsData.monthsRange}
         render={(props) => <MonthController {...props} />}
       />
       <ControllersWrapper
@@ -49,7 +49,7 @@ const DatePicker = ({
         handleClickNext={handlers.handleClickNextDay}
         handleSet={handlers.handleSetDay}
         value={state.selectedDate}
-        options={optionsDate.daysRange}
+        options={optionsData.daysRange}
         render={(props) => <DayController {...props} />}
       />
       <div className={s["datepicker__month-table"]}>

@@ -17,3 +17,24 @@ export const Default: Story = {
     type: 'russian',
   },
 };
+
+export const RangeSelection: Story = {
+  args: {
+    isSelectionRange: true,
+    type: 'russian',
+  },
+};
+
+export const SingleSelection: Story = {
+  args: {
+    isSelectionRange: false,
+    type: 'russian',
+  },
+};
+
+export const EnglishCalendar: Story = {
+  args: {
+    isSelectionRange: false,
+    type: 'english',
+  },
+};
