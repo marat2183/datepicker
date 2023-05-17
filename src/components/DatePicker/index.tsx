@@ -14,41 +14,22 @@ const DatePicker = ({
   type = "russian",
 }: DatePickerProps) => {
   const initialDate = new Date();
-  const { state, handlers, optionsDate, dateToShow } = useDatePicker(
+  const { state, handlers, optionsDate, dataToShow } = useDatePicker(
     initialDate,
     isSelectionRange,
     type
   );
 
-  const startSelectionDate = state.startSelectedDate
-    ? state.startSelectedDate.getTime()
-    : 0;
-  const endSelectionDate = state.endSelectedDate
-    ? state.endSelectedDate.getTime()
-    : 0;
-
-  const startSelectionDateToShow =
-    startSelectionDate && endSelectionDate
-      ? Math.min(startSelectionDate, endSelectionDate)
-      : startSelectionDate;
-  const endSelectionDateToShow =
-    startSelectionDate && endSelectionDate
-      ? Math.max(startSelectionDate, endSelectionDate)
-      : endSelectionDate;
 
   return (
     <div className={s["datepicker"]}>
       <div>
         Start:{" "}
-        {startSelectionDateToShow
-          ? new Date(startSelectionDateToShow).toDateString()
-          : ""}
+        {dataToShow.startSelectionDateToShow}
       </div>
       <div>
         End:{" "}
-        {endSelectionDateToShow
-          ? new Date(endSelectionDateToShow).toDateString()
-          : ""}
+        {dataToShow.endSelectionDateToShow}
       </div>
       <div className={s["datepicker__year"]}>
         <button
@@ -142,7 +123,7 @@ const DatePicker = ({
       </div>
       <div className={s["datepicker__month-table"]}>
         <ul className={s["datepicker__days-list"]}>
-          {dateToShow.daysOfWeekToShow.map((day, index) => {
+          {dataToShow.daysOfWeekToShow.map((day, index) => {
             return (
               <li
                 key={`${day}__${index}`}
@@ -156,7 +137,7 @@ const DatePicker = ({
               </li>
             );
           })}
-          {dateToShow.daysArrayToShow.map((day, index) => {
+          {dataToShow.daysArrayToShow.map((day, index) => {
             return (
               <DayWrapper
                 key={`${day}__${index}`}

@@ -43,6 +43,22 @@ const useDatePicker = (
   const daysOfWeekToShow: Array<string> =
     type === "russian" ? daysOfWeek : englishDaysOfWeek;
 
+    const startSelectionDate = startSelectedDate
+    ? startSelectedDate.getTime()
+    : 0;
+  const endSelectionDate = endSelectedDate
+    ? endSelectedDate.getTime()
+    : 0;
+
+  const startSelectionDateToShow =
+    startSelectionDate && endSelectionDate
+      ? Math.min(startSelectionDate, endSelectionDate)
+      : startSelectionDate;
+  const endSelectionDateToShow =
+    startSelectionDate && endSelectionDate
+      ? Math.max(startSelectionDate, endSelectionDate)
+      : endSelectionDate;
+
   const yearsRange: Array<number> = helperUtil.arrayRange(
     minYearNum,
     maxYearNum
@@ -188,9 +204,15 @@ const useDatePicker = (
       monthsRange,
       daysRange,
     },
-    dateToShow: {
+    dataToShow: {
       daysOfWeekToShow,
       daysArrayToShow,
+      startSelectionDateToShow : startSelectionDateToShow
+      ? new Date(startSelectionDateToShow).toDateString()
+      : "",
+      endSelectionDateToShow : endSelectionDateToShow
+      ? new Date(endSelectionDateToShow).toDateString()
+      : ""
     },
   };
 };
