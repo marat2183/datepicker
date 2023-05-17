@@ -20,10 +20,14 @@ const getMothNumOfFirstDay = (year: number, month: number): number => {
 
 const getDaysToShow = (
   numOfDays: number,
-  dayOfWeekForFirstDay: number
+  dayOfWeekForFirstDay: number,
+  type: string
 ): Array<number | null> => {
   const daysOfWeek = arrayRange(1, numOfDays);
-  const needToAdd = (dayOfWeekForFirstDay - 1 + 7) % 7;
+  const needToAdd =
+    type === "russian"
+      ? (dayOfWeekForFirstDay - 1 + 7) % 7
+      : (dayOfWeekForFirstDay + 7) % 7;
   const nullArray = new Array(needToAdd).fill(null);
   return [...nullArray, ...daysOfWeek];
 };
@@ -42,8 +46,7 @@ const helper = {
   getMothNumOfFirstDay,
   getDaysToShow,
   getNextMonth,
-  getPrevMonth
-
+  getPrevMonth,
 };
 
 export default helper;

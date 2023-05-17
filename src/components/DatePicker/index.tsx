@@ -4,25 +4,51 @@ import DayWrapper from "../DayWrapper";
 
 import s from "./index.module.scss";
 
-const DatePicker = () => {
+type DatePickerProps = {
+  isSelectionRange?: boolean;
+  type?: string;
+};
+
+const DatePicker = ({
+  isSelectionRange = false,
+  type = "russian",
+}: DatePickerProps) => {
   const initialDate = new Date();
-  const { state, handlers, optionsDate, dateToShow } =
-    useDatePicker(initialDate);
+  const { state, handlers, optionsDate, dateToShow } = useDatePicker(
+    initialDate,
+    isSelectionRange,
+    type
+  );
 
-  const startSelectionDate = state.startSelectedDate ? state.startSelectedDate.getTime() : 0;
-  const endSelectionDate = state.endSelectedDate ? state.endSelectedDate.getTime() : 0;
+  const startSelectionDate = state.startSelectedDate
+    ? state.startSelectedDate.getTime()
+    : 0;
+  const endSelectionDate = state.endSelectedDate
+    ? state.endSelectedDate.getTime()
+    : 0;
 
-  const startSelectionDateToShow = startSelectionDate && endSelectionDate ? Math.min(startSelectionDate, endSelectionDate) : startSelectionDate
-  const endSelectionDateToShow = startSelectionDate && endSelectionDate  ? Math.max(startSelectionDate, endSelectionDate): endSelectionDate
+  const startSelectionDateToShow =
+    startSelectionDate && endSelectionDate
+      ? Math.min(startSelectionDate, endSelectionDate)
+      : startSelectionDate;
+  const endSelectionDateToShow =
+    startSelectionDate && endSelectionDate
+      ? Math.max(startSelectionDate, endSelectionDate)
+      : endSelectionDate;
 
   return (
     <div className={s["datepicker"]}>
       <div>
         Start:{" "}
-        {startSelectionDateToShow ? new Date(startSelectionDateToShow).toDateString() : ""}
+        {startSelectionDateToShow
+          ? new Date(startSelectionDateToShow).toDateString()
+          : ""}
       </div>
       <div>
-        End: {endSelectionDateToShow ? new Date(endSelectionDateToShow).toDateString() : ""}
+        End:{" "}
+        {endSelectionDateToShow
+          ? new Date(endSelectionDateToShow).toDateString()
+          : ""}
       </div>
       <div className={s["datepicker__year"]}>
         <button

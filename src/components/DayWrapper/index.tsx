@@ -39,11 +39,12 @@ const DayWrapper = ({
 
   const isSelected =
     (startSelectedDate?.getDate() === dayNum &&
-      selectedMonth === startSelectedDate?.getMonth()) ||
+      selectedMonth === startSelectedDate?.getMonth() && selectedYear === startSelectedDate?.getFullYear()) ||
     (endSelectedDate?.getDate() === dayNum &&
-      selectedMonth === endSelectedDate?.getMonth());
+      selectedMonth === endSelectedDate?.getMonth() && selectedYear === endSelectedDate?.getFullYear());
 
   const isCurrentDay =
+    selectedYear === initialDate.getFullYear() &&
     selectedMonth === initialDate.getMonth() &&
     initialDate.getDate() === dayNum;
 

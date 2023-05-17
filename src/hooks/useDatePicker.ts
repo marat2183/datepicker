@@ -3,6 +3,7 @@ import helperUtil from "../utils/helpers";
 import {
   months,
   daysOfWeek,
+  englishDaysOfWeek,
   minMonthNum,
   maxMonthNum,
   minDayNum,
@@ -10,7 +11,11 @@ import {
   maxYearNum,
 } from "../utils/constants";
 
-const useDatePicker = (initialDate: Date = new Date()) => {
+const useDatePicker = (
+  initialDate: Date = new Date(),
+  isSelectionRange: boolean = false,
+  type: string = "english"
+) => {
   const [selectedMonth, setSelectedMonth] = useState<number>(
     initialDate.getMonth()
   );
@@ -32,9 +37,11 @@ const useDatePicker = (initialDate: Date = new Date()) => {
 
   const daysArrayToShow: Array<null | number> = helperUtil.getDaysToShow(
     daysInMonth,
-    dayOfWeekForFirstDay
+    dayOfWeekForFirstDay,
+    type
   );
-  const daysOfWeekToShow: Array<string> = daysOfWeek;
+  const daysOfWeekToShow: Array<string> =
+    type === "russian" ? daysOfWeek : englishDaysOfWeek;
 
   const yearsRange: Array<number> = helperUtil.arrayRange(
     minYearNum,
@@ -57,7 +64,7 @@ const useDatePicker = (initialDate: Date = new Date()) => {
     return setSelectedMonth(Number(month));
   };
 
-  const handleSetDay = (day: number | string) => {
+  const handleSetSelectionRangeDay = (day: number | string) => {
     setSelectedDate(Number(day));
     if (startSelectedDate && endSelectedDate) {
       setStartSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
@@ -72,6 +79,16 @@ const useDatePicker = (initialDate: Date = new Date()) => {
 
     setStartSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
     return;
+  };
+
+  const handleSetDay = (day: number | string) => {
+    if (isSelectionRange) {
+      handleSetSelectionRangeDay(day);
+      return;
+    }
+    setSelectedDate(Number(day));
+    setStartSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
+    setEndSelectedDate(new Date(selectedYear, selectedMonth, Number(day)));
   };
 
   const handleClickPrevMonth = () => {
