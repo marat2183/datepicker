@@ -9,14 +9,20 @@ const DatePicker = () => {
   const { state, handlers, optionsDate, dateToShow } =
     useDatePicker(initialDate);
 
+  const startSelectionDate = state.startSelectedDate ? state.startSelectedDate.getTime() : 0;
+  const endSelectionDate = state.endSelectedDate ? state.endSelectedDate.getTime() : 0;
+
+  const startSelectionDateToShow = startSelectionDate && endSelectionDate ? Math.min(startSelectionDate, endSelectionDate) : startSelectionDate
+  const endSelectionDateToShow = startSelectionDate && endSelectionDate  ? Math.max(startSelectionDate, endSelectionDate): endSelectionDate
+
   return (
     <div className={s["datepicker"]}>
       <div>
         Start:{" "}
-        {state.startSelectedDate ? state.startSelectedDate.toDateString() : ""}
+        {startSelectionDateToShow ? new Date(startSelectionDateToShow).toDateString() : ""}
       </div>
       <div>
-        End: {state.endSelectedDate ? state.endSelectedDate.toDateString() : ""}
+        End: {endSelectionDateToShow ? new Date(endSelectionDateToShow).toDateString() : ""}
       </div>
       <div className={s["datepicker__year"]}>
         <button
